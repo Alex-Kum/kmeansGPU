@@ -50,12 +50,8 @@ void ElkanKmeans::executeSingleIteration() {
 
     if (!converged) {
 #if SHAREDBOUND
-        updateBoundShared << <numBlocksSB, 66 >> > (d_lower, d_upper,
+        updateBoundShared << <numBlocksSB, blockSizeSB >> > (d_lower, d_upper, 
             d_centerMovement, d_assignment, k, nSB);
-        /*updateBoundShared << <numBlocksSB, blockSizeSB >> > (d_lower, d_upper, 
-            d_centerMovement, d_assignment, k, nSB);*/
-        /*updateBound << <numBlocksB, blockSizeB >> > (d_lower, d_upper,
-            d_centerMovement, d_assignment, k, nB);*/
 #else
         updateBound << <numBlocksB, blockSizeB >> > (d_lower, d_upper,
             d_centerMovement, d_assignment, k, nB);

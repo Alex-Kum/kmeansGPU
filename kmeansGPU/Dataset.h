@@ -1,6 +1,4 @@
 #pragma once
-#pragma once
-
 
 /* Authors: Greg Hamerly and Jonathan Drake
  * Feedback: hamerly@cs.baylor.edu

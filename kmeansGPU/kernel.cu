@@ -41,7 +41,7 @@ int main(){
         //auto* alg = new ElkanKmeans();
         //auto* alg = new FBElkanKmeans(); 
         //auto* alg = new MOElkanKmeans();
-        //* alg = new HamerlyKmeans();
+        //auto* alg = new HamerlyKmeans();
         //auto* alg = new FBHamerly();
 
         std::cout << "Alg: " << alg->getName() << std::endl;

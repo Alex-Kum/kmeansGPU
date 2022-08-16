@@ -48,8 +48,6 @@ void FBElkanKmeans::executeSingleIteration() {
     elkanFunFB << <numBlocksC, blockSizeC >> > (x->d_data, centers->d_data, d_assignment,
         d_lower, d_upper, d_s, d_centerCenterDistDiv2, d_oldcenter2newcenterDis, d_ub_old, k, d, nC, d_closest2, d_countDistances);
 #endif
-    /*elkanFun << <numBlocksC, blockSizeC >> > (x->d_data, centers->d_data, d_assignment,
-        d_lower, d_upper, d_s, d_centerCenterDistDiv2, k, d, n, d_closest2, 0, d_countDistances);*/
     changeAss << <numBlocksC, blockSizeC >> > (x->d_data, d_assignment, d_closest2, d_clusterSize, sumNewCenters[0]->d_data, d, nC, 0);
 
     cudaMemcpy(d_converged, &converged, 1 * sizeof(bool), cudaMemcpyHostToDevice);
@@ -62,10 +60,8 @@ void FBElkanKmeans::executeSingleIteration() {
 
     if (!converged) {
 #if SHAREDBOUND
-        updateBoundFBShared << <numBlocksSB, 66 >> > (d_lower, d_upper, d_ub_old,
+        updateBoundFBShared << <numBlocksSB, blockSizeSB >> > (d_lower, d_upper, d_ub_old,
             d_centerMovement, d_assignment, k, nSB);
-        /*updateBoundFBShared << <numBlocksSB, blockSizeSB >> > (d_lower, d_upper, d_ub_old,
-            d_centerMovement, d_assignment, k, nSB);*/
 #else
         updateBoundFB << <numBlocksB, blockSizeB >> > (d_lower, d_upper, d_ub_old,
             d_centerMovement, d_assignment, k, nB);

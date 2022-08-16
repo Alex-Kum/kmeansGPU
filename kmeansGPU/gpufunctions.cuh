@@ -457,8 +457,6 @@ static __global__ void fbelkanFunK(double* data, double* center, unsigned short*
 
     if (c1 < n) {
         closest2[c1] = assignment[c1];
-        /*calculated[i] = upper[c1] > s[closest2[c1]] && upper[c1] >= lower[i] && upper[c1] >= oldcenter2newcenterDis[assignment[c1] * k + j] - ub_old[c1]
-            && upper[c1] >= centerCenterDistDiv2[closest2[c1] * k + j];*/
         calculated[i] = upper[c1] >= lower[i] && upper[c1] >= oldcenter2newcenterDis[assignment[c1] * k + j] - ub_old[c1]
             && upper[c1] >= centerCenterDistDiv2[closest2[c1] * k + j];
         if (calculated[i]) {
@@ -538,8 +536,7 @@ static __global__ void hamerlyFun(double* data, double* center, unsigned short* 
     }
 }
 
-//static __global__ void hamerlyFunK(double* data, double* center, unsigned short* assignment, double* lower, double* upper,
-//    double* s, double* centerCenterDistDiv2, double* maxoldcenter2newcenterDis, double* ub_old, int k, int dim, int n, unsigned short* closest2, double* distances, bool* calculated) {
+
 static __global__ void hamerlyFunK(double* data, double* center, unsigned short* assignment, double* lower, double* upper,
          double* s, double* centerCenterDistDiv2,  int k, int dim, int n, unsigned short* closest2, double* distances, bool* calculated) {
     int i = blockIdx.x * blockDim.x + threadIdx.x;
@@ -547,7 +544,7 @@ static __global__ void hamerlyFunK(double* data, double* center, unsigned short*
     int c2 = i % k;
 
     if (c1 < n) {
-        calculated[c1] = upper[c1] > s[assignment[c1]] && upper[c1] >= lower[c1]; //&& upper[c1] >= maxoldcenter2newcenterDis[assignment[c1]] - ub_old[c1];    
+        calculated[c1] = upper[c1] > s[assignment[c1]] && upper[c1] >= lower[c1]; 
         if (calculated[c1])
             distances[i] = sqrt(dist(data, center, c1, c2, dim));
     }
@@ -566,11 +563,9 @@ static __global__ void fbhamerlyFunK(double* data, double* center, unsigned shor
     }
 }
 
-//static __global__ void hamCombineK(double* data, double* center, unsigned short* assignment, double* lower, double* upper,
-//    double* s, double* centerCenterDistDiv2, double* maxoldcenter2newcenterDis, double* ub_old, int k, int dim, int n, unsigned short* closest2, bool* calculated, double* distances) {
+
 static __global__ void hamCombineK(double* data, double* center, unsigned short* assignment, double* lower, double* upper,
          double* s, double* centerCenterDistDiv2, int k, int dim, int n, unsigned short* closest2, bool* calculated, double* distances) {
-         //__global__ void elkanFunFBHamTT(double* lower, double* upper, int k, int n, unsigned short* closest2, bool* calculated, double* distances) {
 
     int i = blockIdx.x * blockDim.x + threadIdx.x;
     if (i < n) {
@@ -675,7 +670,7 @@ static __global__ void elkanFunMO(double* data, double* center, unsigned short* 
             for (int j = 0; j < k; ++j) {
                 if (j == closest2[i]) { continue; }
                 if (localUpper <= 2.0 * (oldcenterCenterDistDiv2[assignment[i] * k + j]) - ub_old[i] - centerMovement[j]) { continue; }
-                if (localUpper <= oldcenter2newcenterDis[assignment[i] * k + j] - ub_old[i]) { continue; }  //upper[i] <= lower[i * k + j] ||
+                if (localUpper <= oldcenter2newcenterDis[assignment[i] * k + j] - ub_old[i]) { continue; }
                 if (localUpper <= centerCenterDistDiv2[closest2[i] * k + j]) { continue; }
 
                 // ELKAN 3(a)

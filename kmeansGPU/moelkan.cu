@@ -47,13 +47,7 @@ void MOElkanKmeans::executeSingleIteration() {
     moelkanFunK << <numBlocksK, blockSizeK >> > (x->d_data, centers->d_data, d_assignment, d_distances, d_upper, d_s, d_oldcenter2newcenterDis, d_ub_old,
         d_calculated, n, d, k, d_closest2, d_centerCenterDistDiv2, d_oldcenterCenterDistDiv2, d_centerMovement);
 
-    /*fbelkanFunK << <numBlocksK, blockSizeK >> > (x->d_data, centers->d_data, d_assignment,
-        d_lower, d_upper, d_s, d_oldcenter2newcenterDis, d_ub_old, d_calculated, n, d, k, d_closest2, d_centerCenterDistDiv2);*/
-
     elkCombineK << <numBlocksC, blockSizeC >> > (d_distances, d_upper, k, nC, d_closest2, d_calculated, d_distances);
-
-  /*  elkanFunMO << <numBlocksC, blockSizeC >> > (x->d_data, centers->d_data, d_assignment, d_upper, d_s, d_centerCenterDistDiv2,
-        d_oldcenter2newcenterDis, d_oldcenterCenterDistDiv2, d_ub_old, d_centerMovement, k, d, nC, d_closest2, d_countDistances);*/
 #else
     elkanFunMO << <numBlocksC, blockSizeC >> > (x->d_data, centers->d_data, d_assignment, d_upper, d_s, d_centerCenterDistDiv2,
         d_oldcenter2newcenterDis, d_oldcenterCenterDistDiv2, d_ub_old, d_centerMovement, k, d, nC, d_closest2, d_countDistances);

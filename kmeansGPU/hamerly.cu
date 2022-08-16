@@ -53,10 +53,8 @@ void HamerlyKmeans::executeSingleIteration() {
 
     if (!converged) {
 #if SHAREDBOUND
-        updateBoundHamShared << <numBlocksSB, 66 >> > (d_lower, d_upper,
+        updateBoundHamShared << <numBlocksSB, blockSizeSB >> > (d_lower, d_upper,
             d_centerMovement, d_assignment, k, nSB);
-        /*updateBoundHamShared << <numBlocksSB, blockSizeSB >> > (d_lower, d_upper,
-            d_centerMovement, d_assignment, k, nSB);*/
 #else
         updateBoundHam << <numBlocksB, blockSizeB >> > (d_lower, d_upper, d_centerMovement,
             d_assignment, k, nB);
